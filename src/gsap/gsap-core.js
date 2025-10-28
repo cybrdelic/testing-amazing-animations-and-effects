@@ -192,9 +192,18 @@ export const GSAPPresets = {
   textReveal(element, duration = 1.5) {
     // Split text into characters for animation
     const text = element.textContent;
-    element.innerHTML = text.split('').map(char => 
-      `<span style="display:inline-block">${char === ' ' ? '&nbsp;' : char}</span>`
-    ).join('');
+    
+    // Create a helper function to escape HTML
+    const escapeHTML = (str) => {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    };
+    
+    element.innerHTML = text.split('').map(char => {
+      const escaped = char === ' ' ? '&nbsp;' : escapeHTML(char);
+      return `<span style="display:inline-block">${escaped}</span>`;
+    }).join('');
     
     const chars = element.querySelectorAll('span');
     

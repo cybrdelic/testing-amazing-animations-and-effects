@@ -198,6 +198,17 @@ This library includes techniques used in award-winning websites:
 - **Three.js**: All modern browsers
 - **GSAP**: All browsers including IE11+
 
+## ⚠️ Security Notes
+
+**Development Server**: The Vite development server has a known moderate-severity vulnerability (GHSA-67mh-4wv8-2f99) that only affects development environments. This does NOT affect production builds.
+
+**Mitigation**:
+- Never expose the development server to public internet
+- Always use `npm run build` for production deployments
+- Run development server only in trusted environments
+
+For more details, see [SECURITY.md](./SECURITY.md).
+
 ## 🤝 Contributing
 
 Contributions are welcome! This repository showcases best practices for:
