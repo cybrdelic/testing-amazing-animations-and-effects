@@ -13,8 +13,8 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #000;
-      color: white;
+      background: #0a0a0a;
+      color: #e0e0e0;
       overflow: hidden;
     }
 
@@ -28,10 +28,11 @@
       position: absolute;
       top: 20px;
       left: 20px;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(10, 10, 10, 0.85);
       padding: 20px;
-      border-radius: 10px;
-      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .info h1 {
@@ -52,25 +53,30 @@
       top: 20px;
       right: 20px;
       padding: 10px 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
       text-decoration: none;
-      color: white;
-      transition: background 0.3s;
+      color: #e0e0e0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
     }
 
     .back-link:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateX(-4px);
     }
 
     .controls {
       position: absolute;
       bottom: 20px;
       left: 20px;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(10, 10, 10, 0.85);
       padding: 15px;
-      border-radius: 10px;
-      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .controls p {
