@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three.js Example - Award-Winning Animations</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #000;
+      color: white;
+      overflow: hidden;
+    }
+
+    #canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .info {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    .info h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(45deg, #4facfe, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .info p {
+      opacity: 0.8;
+      margin: 0.5rem 0;
+    }
+
+    .back-link {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      text-decoration: none;
+      color: white;
+      transition: background 0.3s;
+    }
+
+    .back-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 15px;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    .controls p {
+      font-size: 0.9rem;
+      margin: 0.25rem 0;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  
+  <div class="info">
+    <h1>Three.js Demo</h1>
+    <p>Morphing blob with holographic materials</p>
+    <p id="fps">FPS: --</p>
+  </div>
+
+  <div class="controls">
+    <p>🎨 Organic morphing geometry</p>
+    <p>✨ Holographic shader effects</p>
+  </div>
+
+  <a href="../index.html" class="back-link">← Back</a>
+
+  <script type="module">
+    import { ThreeJSScene } from '../src/threejs/threejs-core.js';
+    import { MorphingBlob, FlowingParticles, createHolographicMaterial } from '../src/threejs/advanced-effects.js';
+    import * as THREE from 'three';
+
+    const canvas = document.getElementById('canvas');
+    const fpsElement = document.getElementById('fps');
+
+    // Set canvas size with device pixel ratio
+    const dpr = Math.min(window.devicePixelRatio, 2);
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+
+    // Initialize scene
+    const scene = new ThreeJSScene({
+      backgroundColor: 0x000000,
+      fog: false,
+      shadows: false,
+      cameraZ: 10
+    });
+
+    scene.init(canvas);
+
+    // Add morphing blob
+    const blob = new MorphingBlob(scene.scene);
+    
+    // Add flowing particles
+    const particles = new FlowingParticles(scene.scene, 5000);
+    
+    // Add holographic torus
+    const torusGeometry = new THREE.TorusKnotGeometry(1.5, 0.5, 128, 16);
+    const holographicMaterial = createHolographicMaterial();
+    const torus = new THREE.Mesh(torusGeometry, holographicMaterial);
+    torus.position.set(0, 0, -5);
+    scene.scene.add(torus);
+
+    // FPS counter
+    let lastTime = performance.now();
+    let frameCount = 0;
+
+    // Animation loop
+    scene.animate((delta, elapsed) => {
+      // Update custom effects
+      blob.update(delta);
+      particles.update(delta);
+      
+      // Update holographic material
+      holographicMaterial.uniforms.uTime.value = elapsed;
+      torus.rotation.x = elapsed * 0.2;
+      torus.rotation.y = elapsed * 0.3;
+
+      // Update FPS
+      frameCount++;
+      const currentTime = performance.now();
+      if (currentTime - lastTime >= 1000) {
+        fpsElement.textContent = `FPS: ${frameCount}`;
+        frameCount = 0;
+        lastTime = currentTime;
+      }
+    });
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+      const dpr = Math.min(window.devicePixelRatio, 2);
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      scene.resize(canvas.width, canvas.height);
+    });
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      blob.dispose();
+      particles.dispose();
+      scene.dispose();
+    });
+  </script>
+</body>
+</html>

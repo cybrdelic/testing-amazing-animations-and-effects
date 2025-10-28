@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GSAP Example - Award-Winning Animations</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      padding: 3rem 0;
+    }
+
+    .header h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, #43e97b, #38f9d7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 2rem;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      text-decoration: none;
+      color: white;
+      transition: background 0.3s;
+    }
+
+    .back-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .demo-section {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+
+    .demo-section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .demo-section p {
+      opacity: 0.9;
+      margin-bottom: 1.5rem;
+    }
+
+    .box {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      border-radius: 10px;
+      margin: 1rem;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .text-demo {
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 1rem 0;
+    }
+
+    button {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+      font-weight: bold;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 1rem 0;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .grid-item {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(45deg, #f093fb, #f5576c);
+      border-radius: 10px;
+    }
+
+    .magnetic-box {
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(45deg, #4facfe, #00f2fe);
+      border-radius: 20px;
+      margin: 3rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="../index.html" class="back-link">← Back</a>
+    
+    <div class="header">
+      <h1>GSAP Animations</h1>
+      <p>Professional-grade animation library</p>
+    </div>
+
+    <!-- Fade In Demo -->
+    <div class="demo-section" id="fadeDemo">
+      <h2>Fade In Animation</h2>
+      <p>Smooth entrance animations</p>
+      <div class="button-group">
+        <button id="fadeInBtn">Fade In Boxes</button>
+        <button id="resetFadeBtn">Reset</button>
+      </div>
+      <div id="fadeBoxes">
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+      </div>
+    </div>
+
+    <!-- Text Reveal Demo -->
+    <div class="demo-section">
+      <h2>Text Reveal Animation</h2>
+      <p>Character-by-character animation</p>
+      <button id="textRevealBtn">Reveal Text</button>
+      <div class="text-demo" id="revealText">AWARD WINNING</div>
+    </div>
+
+    <!-- Stagger Demo -->
+    <div class="demo-section">
+      <h2>Stagger Animation</h2>
+      <p>Sequenced animations with delay</p>
+      <button id="staggerBtn">Animate Grid</button>
+      <div class="grid" id="staggerGrid">
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+        <div class="grid-item"></div>
+      </div>
+    </div>
+
+    <!-- Magnetic Effect Demo -->
+    <div class="demo-section">
+      <h2>Magnetic Effect</h2>
+      <p>Interactive mouse-following animation</p>
+      <div class="magnetic-box" id="magneticBox">
+        Hover Me!
+      </div>
+    </div>
+
+    <!-- Timeline Demo -->
+    <div class="demo-section">
+      <h2>Complex Timeline</h2>
+      <p>Coordinated sequence of animations</p>
+      <button id="timelineBtn">Play Timeline</button>
+      <div id="timelineBoxes">
+        <div class="box" style="background: linear-gradient(45deg, #fa709a, #fee140);"></div>
+        <div class="box" style="background: linear-gradient(45deg, #30cfd0, #330867);"></div>
+        <div class="box" style="background: linear-gradient(45deg, #a8edea, #fed6e3);"></div>
+      </div>
+    </div>
+
+    <!-- Morphing Text Demo -->
+    <div class="demo-section">
+      <h2>Morphing Text</h2>
+      <p>Seamless text transitions</p>
+      <div class="text-demo" id="morphingText" style="font-size: 2rem; font-weight: bold; text-align: center; margin: 2rem 0;">CREATIVE</div>
+    </div>
+
+    <!-- Cursor Spotlight Demo -->
+    <div class="demo-section">
+      <h2>Cursor Spotlight</h2>
+      <p>Move your mouse to reveal the spotlight effect</p>
+      <button id="spotlightBtn">Toggle Spotlight</button>
+      <div id="spotlightArea" style="height: 200px; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 1rem 0;">
+        <p style="font-size: 1.5rem; opacity: 0.5;">Move your mouse here</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { GSAPPresets, TimelineBuilder, enablePerformanceMode } from '../src/gsap/gsap-core.js';
+    import { createMorphingText, createCursorSpotlight } from '../src/gsap/advanced-animations.js';
+    import gsap from 'gsap';
+
+    // Enable performance optimizations
+    enablePerformanceMode();
+
+    // Fade In Demo
+    const fadeBoxes = document.querySelectorAll('#fadeBoxes .box');
+    gsap.set(fadeBoxes, { opacity: 0, y: 50 });
+
+    document.getElementById('fadeInBtn').addEventListener('click', () => {
+      GSAPPresets.staggerIn(fadeBoxes, 0.8, 0.15);
+    });
+
+    document.getElementById('resetFadeBtn').addEventListener('click', () => {
+      gsap.set(fadeBoxes, { opacity: 0, y: 50 });
+    });
+
+    // Text Reveal Demo
+    document.getElementById('textRevealBtn').addEventListener('click', () => {
+      const textElement = document.getElementById('revealText');
+      textElement.textContent = 'AWARD WINNING';
+      GSAPPresets.textReveal(textElement, 2);
+    });
+
+    // Stagger Grid Demo
+    const gridItems = document.querySelectorAll('#staggerGrid .grid-item');
+    
+    document.getElementById('staggerBtn').addEventListener('click', () => {
+      gsap.fromTo(gridItems,
+        { 
+          scale: 0,
+          rotation: -180,
+          opacity: 0
+        },
+        {
+          scale: 1,
+          rotation: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: {
+            amount: 1.2,
+            from: 'random',
+            ease: 'power2.out'
+          },
+          ease: 'back.out(1.7)'
+        }
+      );
+    });
+
+    // Magnetic Effect Demo
+    const magneticBox = document.getElementById('magneticBox');
+    const cleanup = GSAPPresets.magnetic(magneticBox, 0.4);
+
+    // Timeline Demo
+    document.getElementById('timelineBtn').addEventListener('click', () => {
+      const boxes = document.querySelectorAll('#timelineBoxes .box');
+      
+      const timeline = new TimelineBuilder();
+      
+      timeline
+        .to(boxes[0], { x: 200, rotation: 360, duration: 1, ease: 'power2.out' })
+        .to(boxes[1], { y: -100, scale: 1.5, duration: 1, ease: 'elastic.out(1, 0.5)' }, '-=0.5')
+        .to(boxes[2], { x: -200, rotation: -360, duration: 1, ease: 'back.out(1.7)' }, '-=0.5')
+        .to(boxes, { x: 0, y: 0, rotation: 0, scale: 1, duration: 1, ease: 'power2.inOut' }, '+=0.5');
+      
+      timeline.play();
+    });
+
+    // Morphing text demo
+    const morphTexts = ['CREATIVE', 'UNIQUE', 'INNOVATIVE', 'STUNNING'];
+    createMorphingText(document.getElementById('morphingText'), morphTexts, 3);
+
+    // Cursor spotlight demo
+    let spotlightCleanup = null;
+    let spotlightActive = false;
+    
+    document.getElementById('spotlightBtn').addEventListener('click', () => {
+      if (spotlightActive) {
+        if (spotlightCleanup) spotlightCleanup();
+        spotlightActive = false;
+        document.getElementById('spotlightBtn').textContent = 'Toggle Spotlight';
+      } else {
+        spotlightCleanup = createCursorSpotlight(document.getElementById('spotlightArea'));
+        spotlightActive = true;
+        document.getElementById('spotlightBtn').textContent = 'Disable Spotlight';
+      }
+    });
+
+    // Initial animations on page load
+    window.addEventListener('load', () => {
+      const demoSections = document.querySelectorAll('.demo-section');
+      GSAPPresets.staggerIn(demoSections, 1, 0.2);
+      
+      // Animate header
+      gsap.from('.header h1', {
+        y: -50,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out'
+      });
+      
+      gsap.from('.header p', {
+        y: -30,
+        opacity: 0,
+        duration: 1,
+        delay: 0.2,
+        ease: 'power3.out'
+      });
+    });
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      if (cleanup) cleanup();
+    });
+  </script>
+</body>
+</html>
