@@ -1,5 +1,5 @@
 /**
- * Award-Winning Animation Essentials
+ * Modern Animation Demos
  * Main entry point for WebGPU, WebGL, Three.js, and GSAP utilities
  */
 

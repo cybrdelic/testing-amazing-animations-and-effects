@@ -1,7 +1,7 @@
 {
   "name": "testing-amazing-animations-and-effects",
   "version": "1.0.0",
-  "description": "Award-winning animations using WebGPU, WebGL, Three.js, and GSAP",
+  "description": "Modern animation demos using WebGPU, WebGL, Three.js, and GSAP",
   "type": "module",
   "main": "src/index.js",
   "scripts": {
