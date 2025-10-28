@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three.js Example - Award-Winning Animations</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #000;
+      color: white;
+      overflow: hidden;
+    }
+
+    #canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .info {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    .info h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(45deg, #4facfe, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .info p {
+      opacity: 0.8;
+      margin: 0.5rem 0;
+    }
+
+    .back-link {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      text-decoration: none;
+      color: white;
+      transition: background 0.3s;
+    }
+
+    .back-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 15px;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    .controls p {
+      font-size: 0.9rem;
+      margin: 0.25rem 0;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  
+  <div class="info">
+    <h1>Three.js Demo</h1>
+    <p>Particle system with animated geometries</p>
+    <p id="fps">FPS: --</p>
+  </div>
+
+  <div class="controls">
+    <p>🖱️ Drag to rotate camera</p>
+    <p>🔍 Scroll to zoom</p>
+  </div>
+
+  <a href="../index.html" class="back-link">← Back</a>
+
+  <script type="module">
+    import { ThreeJSScene, ThreeJSGeometry, CameraController } from '../src/threejs/threejs-core.js';
+    import * as THREE from 'three';
+
+    const canvas = document.getElementById('canvas');
+    const fpsElement = document.getElementById('fps');
+
+    // Set canvas size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Initialize scene
+    const scene = new ThreeJSScene({
+      backgroundColor: 0x0a0a0a,
+      fog: true,
+      shadows: true,
+      cameraZ: 15
+    });
+
+    scene.init(canvas);
+
+    // Add particle system
+    const particles = ThreeJSGeometry.createParticleSystem(2000);
+    scene.scene.add(particles);
+
+    // Add rotating torus knot
+    const torusKnot = ThreeJSGeometry.createTorusKnot();
+    torusKnot.position.set(-3, 0, 0);
+    scene.scene.add(torusKnot);
+
+    // Add glowing sphere
+    const glowSphere = ThreeJSGeometry.createGlowSphere(1, 0x00ff88);
+    glowSphere.position.set(3, 0, 0);
+    scene.scene.add(glowSphere);
+
+    // Add animated icosahedron
+    const icosahedronGeometry = new THREE.IcosahedronGeometry(1.5, 0);
+    const icosahedron = scene.addMesh(icosahedronGeometry, {
+      color: 0xff6b6b,
+      metalness: 0.8,
+      roughness: 0.2,
+      emissive: 0xff6b6b,
+      emissiveIntensity: 0.3
+    });
+    icosahedron.position.set(0, 2, 0);
+
+    // Enable camera controls
+    const cameraController = new CameraController(scene.camera, scene.renderer);
+
+    // FPS counter
+    let lastTime = performance.now();
+    let frameCount = 0;
+
+    // Animation loop
+    scene.animate((delta, elapsed) => {
+      // Rotate particles
+      particles.rotation.y = elapsed * 0.1;
+      particles.rotation.x = elapsed * 0.05;
+
+      // Rotate torus knot
+      torusKnot.rotation.x = elapsed * 0.5;
+      torusKnot.rotation.y = elapsed * 0.3;
+
+      // Pulse the glow sphere
+      const scale = 1 + Math.sin(elapsed * 2) * 0.1;
+      glowSphere.scale.set(scale, scale, scale);
+
+      // Rotate icosahedron
+      icosahedron.rotation.x = elapsed * 0.4;
+      icosahedron.rotation.y = elapsed * 0.6;
+
+      // Animate particle positions
+      const positions = particles.geometry.attributes.position.array;
+      for (let i = 0; i < positions.length; i += 3) {
+        const i3 = i;
+        const x = positions[i3];
+        const y = positions[i3 + 1];
+        const z = positions[i3 + 2];
+        
+        // Add subtle wave motion
+        positions[i3 + 1] = y + Math.sin(elapsed + x) * 0.01;
+      }
+      particles.geometry.attributes.position.needsUpdate = true;
+
+      // Update FPS
+      frameCount++;
+      const currentTime = performance.now();
+      if (currentTime - lastTime >= 1000) {
+        fpsElement.textContent = `FPS: ${frameCount}`;
+        frameCount = 0;
+        lastTime = currentTime;
+      }
+    });
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      scene.resize(canvas.width, canvas.height);
+    });
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      scene.dispose();
+    });
+  </script>
+</body>
+</html>
