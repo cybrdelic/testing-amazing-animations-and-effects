@@ -250,6 +250,7 @@ export const ThreeJSShaders = {
     uniform float uTime;
     varying vec2 vUv;
     varying vec3 vNormal;
+    varying vec3 vPosition;
     
     void main() {
       vUv = uv;
@@ -258,6 +259,9 @@ export const ThreeJSShaders = {
       vec3 pos = position;
       pos.z += sin(pos.x * 2.0 + uTime) * 0.5;
       pos.z += cos(pos.y * 2.0 + uTime) * 0.5;
+      
+      vec4 worldPosition = modelMatrix * vec4(pos, 1.0);
+      vPosition = worldPosition.xyz;
       
       gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
     }
@@ -268,6 +272,7 @@ export const ThreeJSShaders = {
     uniform float uTime;
     varying vec2 vUv;
     varying vec3 vNormal;
+    varying vec3 vPosition;
     
     void main() {
       vec3 color = vec3(0.0);
@@ -278,8 +283,8 @@ export const ThreeJSShaders = {
       color.b = cos(vUv.x * vUv.y * 10.0 + uTime) * 0.5 + 0.5;
       
       // Add fresnel effect
-      vec3 viewDirection = normalize(cameraPosition - vNormal);
-      float fresnel = pow(1.0 - dot(vNormal, viewDirection), 3.0);
+      vec3 viewDirection = normalize(cameraPosition - vPosition);
+      float fresnel = pow(1.0 - dot(normalize(vNormal), viewDirection), 3.0);
       color += fresnel * 0.5;
       
       gl_FragColor = vec4(color, 0.8);
