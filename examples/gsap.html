@@ -220,10 +220,28 @@
         <div class="box" style="background: linear-gradient(45deg, #a8edea, #fed6e3);"></div>
       </div>
     </div>
+
+    <!-- Morphing Text Demo -->
+    <div class="demo-section">
+      <h2>Morphing Text</h2>
+      <p>Seamless text transitions</p>
+      <div class="text-demo" id="morphingText" style="font-size: 2rem; font-weight: bold; text-align: center; margin: 2rem 0;">CREATIVE</div>
+    </div>
+
+    <!-- Cursor Spotlight Demo -->
+    <div class="demo-section">
+      <h2>Cursor Spotlight</h2>
+      <p>Move your mouse to reveal the spotlight effect</p>
+      <button id="spotlightBtn">Toggle Spotlight</button>
+      <div id="spotlightArea" style="height: 200px; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 1rem 0;">
+        <p style="font-size: 1.5rem; opacity: 0.5;">Move your mouse here</p>
+      </div>
+    </div>
   </div>
 
   <script type="module">
     import { GSAPPresets, TimelineBuilder, enablePerformanceMode } from '../src/gsap/gsap-core.js';
+    import { createMorphingText, createCursorSpotlight } from '../src/gsap/advanced-animations.js';
     import gsap from 'gsap';
 
     // Enable performance optimizations
@@ -290,6 +308,26 @@
         .to(boxes, { x: 0, y: 0, rotation: 0, scale: 1, duration: 1, ease: 'power2.inOut' }, '+=0.5');
       
       timeline.play();
+    });
+
+    // Morphing text demo
+    const morphTexts = ['CREATIVE', 'UNIQUE', 'INNOVATIVE', 'STUNNING'];
+    createMorphingText(document.getElementById('morphingText'), morphTexts, 3);
+
+    // Cursor spotlight demo
+    let spotlightCleanup = null;
+    let spotlightActive = false;
+    
+    document.getElementById('spotlightBtn').addEventListener('click', () => {
+      if (spotlightActive) {
+        if (spotlightCleanup) spotlightCleanup();
+        spotlightActive = false;
+        document.getElementById('spotlightBtn').textContent = 'Toggle Spotlight';
+      } else {
+        spotlightCleanup = createCursorSpotlight(document.getElementById('spotlightArea'));
+        spotlightActive = true;
+        document.getElementById('spotlightBtn').textContent = 'Disable Spotlight';
+      }
     });
 
     // Initial animations on page load

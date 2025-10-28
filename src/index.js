@@ -18,6 +18,11 @@ export {
   isWebGL2Supported 
 } from './webgl/webgl-core.js';
 
+// Advanced WebGL Shaders
+export {
+  AdvancedWebGLShaders
+} from './webgl/advanced-shaders.js';
+
 // Three.js Essentials
 export { 
   ThreeJSScene, 
@@ -25,6 +30,13 @@ export {
   ThreeJSShaders,
   CameraController 
 } from './threejs/threejs-core.js';
+
+// Advanced Three.js Effects
+export {
+  MorphingBlob,
+  FlowingParticles,
+  createHolographicMaterial
+} from './threejs/advanced-effects.js';
 
 // GSAP Essentials
 export { 
@@ -35,6 +47,16 @@ export {
   createScrollAnimation,
   enablePerformanceMode 
 } from './gsap/gsap-core.js';
+
+// Advanced GSAP Animations
+export {
+  createLiquidButton,
+  createCursorSpotlight,
+  createMorphingText,
+  createSpringFollow,
+  createPageTransition,
+  createInfiniteMarquee
+} from './gsap/advanced-animations.js';
 
 /**
  * Feature detection for all technologies
